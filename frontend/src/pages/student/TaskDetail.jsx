@@ -53,7 +53,7 @@ export default function TaskDetail() {
   };
 
   return (
-    <div className="space-y-5 font-bebas">
+    <div className="space-y-5 font-poppins">
       <div className=" rounded-xl p-5">
             <img className="h-full w-full" src={task.uiImage} alt="task_image"/>
         <div className="flex items-center gap-4">
@@ -81,6 +81,16 @@ export default function TaskDetail() {
     </p>
   </div>
 )}
+
+   {/* <div className="mt-4 whitespace-pre-wrap text-gray-800">
+    <p>Font Size</p>
+          {task.assets.fontSize}
+        </div> */}
+
+           <div className="mt-4 whitespace-pre-wrap text-gray-800">
+             <p>Font Family</p>
+          {task.assets.fontFamily}
+        </div>
 
 {/* Download Section */}
 <div className="mt-4">

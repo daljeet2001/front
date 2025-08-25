@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect,useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { createTaskApi } from "../../api/tasks";
 
@@ -10,58 +10,50 @@ export default function CreateTask() {
     difficulty: "medium",
     points: 10,
     dependencies: "",
-    fontSize: "16px",
-    fontFamily: "Arial, sans-serif",
+    fontSize: "",
+    fontFamily: "",
   });
 
-  const [uiImage, setUiImage] = useState(null); // required UI image
-  const [logo, setLogo] = useState(null); // optional logo
-  const [images, setImages] = useState([]); // optional multiple images
+  const [uiImage, setUiImage] = useState(null);
+  const [logo, setLogo] = useState(null);
+  const [images, setImages] = useState([]);
   const [err, setErr] = useState("");
 
   const submit = async (e) => {
     e.preventDefault();
     setErr("");
 
-
     if (!uiImage) {
       setErr("UI Image is required");
       return;
     }
 
-
-
-
     try {
-      console.log("submit button hit")
       const formData = new FormData();
       formData.append("title", form.title);
       formData.append("description", form.description);
       formData.append("difficulty", form.difficulty);
       formData.append("points", form.points);
-
       formData.append("fontSize", form.fontSize);
       formData.append("fontFamily", form.fontFamily);
 
       if (form.dependencies) {
-        const depsArray = form.dependencies
+        form.dependencies
           .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean);
-        depsArray.forEach((dep) => formData.append("dependencies[]", dep));
+          .map((d) => d.trim())
+          .filter(Boolean)
+          .forEach((dep) => formData.append("dependencies[]", dep));
       }
 
-      // Append files
       formData.append("uiImage", uiImage);
       if (logo) formData.append("logo", logo);
-
       images.forEach((img) => formData.append("images", img));
+    for (let [key, value] of formData.entries()) {
+  console.log(key, value);
+}
 
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-      await createTaskApi(formData, true); // true = FormData
 
+      await createTaskApi(formData, true);
       nav("/admin/dashboard");
     } catch (e) {
       setErr(e?.response?.data?.message || "Failed to create task");
@@ -69,7 +61,28 @@ export default function CreateTask() {
   };
 
   return (
-    <div className="space-y-3">
+    <form className="space-y-6 max-w-3xl mx-auto p-6 bg-white x" onSubmit={submit}>
+      <h1 className="text-2xl font-bold mb-4">Create Task</h1>
+      {err && <p className="text-red-600">{err}</p>}
+
+            {/* UI Image */}
+      <div>
+        <label className="block font-semibold mb-1">UI Image</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setUiImage(e.target.files[0])}
+        />
+        {uiImage && (
+          <img
+            src={URL.createObjectURL(uiImage)}
+            alt="UI Preview"
+            className="mt-2 h-full w-full object-contain "
+          />
+        )}
+      </div>
+
+      {/* Title */}
       <div>
         <label className="block font-semibold mb-1">Title</label>
         <input
@@ -80,6 +93,7 @@ export default function CreateTask() {
         />
       </div>
 
+      {/* Description */}
       <div>
         <label className="block font-semibold mb-1">Description</label>
         <textarea
@@ -91,32 +105,30 @@ export default function CreateTask() {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      {/* Difficulty & Points */}
+      <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block font-semibold mb-1">Difficulty</label>
-          <select
-            className="border rounded px-3 py-2 w-full"
-            value={form.difficulty}
-            onChange={(e) => setForm({ ...form, difficulty: e.target.value })}
-          >
-            <option value="easy">easy</option>
-            <option value="medium">medium</option>
-            <option value="hard">hard</option>
-          </select>
-        </div>
+    <StatusSelect
+  value={form.difficulty}
+  onChange={(val) => setForm({ ...form, difficulty: val })}
+  options={["easy", "medium", "hard"]}
+/>
 
+        </div>
         <div>
           <label className="block font-semibold mb-1">Points</label>
           <input
-            className="border rounded px-3 py-2 w-full"
-            placeholder="10"
             type="number"
+            className="w-full border rounded px-3 py-2"
+            placeholder="10"
             value={form.points}
             onChange={(e) => setForm({ ...form, points: e.target.value })}
           />
         </div>
       </div>
 
+      {/* Dependencies */}
       <div>
         <label className="block font-semibold mb-1">Dependencies</label>
         <input
@@ -127,15 +139,9 @@ export default function CreateTask() {
         />
       </div>
 
-      <div>
-        <label className="block font-semibold mb-1">UI Image</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setUiImage(e.target.files[0])}
-        />
-      </div>
 
+
+      {/* Logo */}
       <div>
         <label className="block font-semibold mb-1">Logo (optional)</label>
         <input
@@ -143,8 +149,16 @@ export default function CreateTask() {
           accept="image/*"
           onChange={(e) => setLogo(e.target.files[0])}
         />
+        {logo && (
+          <img
+            src={URL.createObjectURL(logo)}
+            alt="Logo Preview"
+            className="mt-2 h-full w-full object-contain  "
+          />
+        )}
       </div>
 
+      {/* Additional Images */}
       <div>
         <label className="block font-semibold mb-1">Additional Images (optional)</label>
         <input
@@ -152,25 +166,36 @@ export default function CreateTask() {
           accept="image/*"
           multiple
           onChange={(e) => setImages(Array.from(e.target.files))}
-
         />
+        {images.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {images.map((img, idx) => (
+              <img
+                key={idx}
+                src={URL.createObjectURL(img)}
+                alt={`Additional ${idx}`}
+                className="h-full w-full object-contain"
+              />
+            ))}
+          </div>
+        )}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div>
+      {/* Font Settings */}
+      <div className="grid grid-cols-2 gap-4">
+        {/* <div>
           <label className="block font-semibold mb-1">Font Size</label>
           <input
-            className="border rounded px-3 py-2 w-full"
+            className="w-full border rounded px-3 py-2"
             placeholder="16px"
             value={form.fontSize}
             onChange={(e) => setForm({ ...form, fontSize: e.target.value })}
           />
-        </div>
-
+        </div> */}
         <div>
           <label className="block font-semibold mb-1">Font Family</label>
           <input
-            className="border rounded px-3 py-2 w-full"
+            className="w-full border rounded px-3 py-2"
             placeholder="Arial, sans-serif"
             value={form.fontFamily}
             onChange={(e) => setForm({ ...form, fontFamily: e.target.value })}
@@ -178,8 +203,62 @@ export default function CreateTask() {
         </div>
       </div>
 
-      <button onClick={submit} className="px-4 py-2 rounded bg-blue-600 text-black">Create</button>
-    </div>
+      {/* Submit Button */}
+      <button
+        type="submit"
+        className="px-5 py-2 rounded-full bg-black text-white font-semibold "
+      >
+        Create Task
+      </button>
+    </form>
+  );
+}
 
+
+function StatusSelect({ value, onChange, options = ["pending", "evaluating", "passed", "failed"] }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef();
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSelect = (val) => {
+    onChange(val);
+    setOpen(false);
+  };
+
+  return (
+    <div className="relative w-full font-dm-serif " ref={ref}>
+      {/* Selected value button */}
+      <button
+        type="button"
+        className=" px-3 py-2 w-full bg-white border  rounded px-3 py-1 text-left flex justify-between items-center"
+        onClick={() => setOpen(!open)}
+      >
+        <span>{value || "Select status"}</span>
+   
+      </button>
+
+      {/* Dropdown */}
+      {open && (
+        <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded shadow-lg max-h-40 overflow-auto">
+          {options.map((opt) => (
+            <li
+              key={opt}
+              className={`px-3 py-1 cursor-pointer hover:bg-gray-100 ${opt === value ? "bg-gray-200 font-semibold" : ""}`}
+              onClick={() => handleSelect(opt)}
+            >
+              {opt}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

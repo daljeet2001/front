@@ -16,7 +16,7 @@ export default function AdminDashboard() {
   useEffect(()=> { load(); }, []);
 
   const del = async (id) => {
-    if (!confirm("Delete this task (and related submissions)?")) return;
+    // if (!confirm("Delete this task (and related submissions)?")) return;
     await deleteTaskApi(id);
     await load();
   };
@@ -29,26 +29,33 @@ export default function AdminDashboard() {
     <div>
 
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+  
         <button onClick={() => nav("/admin/task/create")}
-          className="px-4 py-2 rounded bg-blue-600 text-black"
+          className="px-4 py-2 rounded-full bg-black text-white"
         >
           Create Task
         </button>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="flex-col">
         {tasks.map(t => (
-          <div key={t._id} className="bg-white border rounded-xl p-5">
-               <img className="h-40" src={t.uiImage} alt="task_image"/>
+          <div key={t._id} className="bg-white p-5 hover:scale-105 transition transform duration-200">
+               <img className="h-full w-full" src={t.uiImage} alt="task_image"/>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold">{t.title}</h2>
-              <span className="text-xs text-gray-500">{t.points ?? 10} pts</span>
+              <div>
+              <span className="text-xs text-gray-500 mr-3"> points:{t.points ?? 10} pts</span>
+              {/* <span className="text-xs text-gray-500">font size:{t.assets.fontSize} </span> */}
+              <span className="text-xs text-gray-500"> font family:{t.assets.fontFamily}</span></div>
             </div>
             <p className="text-sm text-gray-600 mt-2 line-clamp-3">{t.description}</p>
+ 
+            
+    
             <div className="mt-4 flex items-center gap-3">
-              <Link className="text-blue-600" to={`/admin/task/${t._id}/review`}>Review submissions</Link>
-              <button onClick={() => del(t._id)} className="text-red-600">Delete</button>
+              <Link className="text-black" to={`/admin/task/${t._id}/review`}>Review submissions</Link>
+                
+               <button onClick={() => del(t._id)} className="text-red-600">Delete</button> 
             </div>
           </div>
         ))}

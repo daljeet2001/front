@@ -62,7 +62,7 @@ exports.getTask = async (req, res, next) => {
 // =============================
 exports.createTask = async (req, res, next) => {
   try {
-    const { title, description, difficulty, points, assets ,dependencies} = req.body;
+    const { title, description, difficulty, points, assets ,dependencies,fontSize,fontFamily} = req.body;
     console.log("Images:", req.files.images?.map(f => f.originalname));
     if (!title || !description) {
       return next(new ErrorResponse('Title and description are required', 400));
@@ -100,11 +100,11 @@ exports.createTask = async (req, res, next) => {
       assets: {
         logo: logoUrl,
         images: imagesArray,
-        fontSize: assets?.fontSize || '16px',
-        fontFamily: assets?.fontFamily || 'Arial, sans-serif',
+        // fontSize: fontSize || '',
+        fontFamily: fontFamily || 'Arial, sans-serif',
       },
       difficulty: ['easy', 'medium', 'hard'].includes(difficulty) ? difficulty : 'medium',
-      points: Number.isInteger(points) && points >= 0 ? points : 10,
+      points: Number(points),
     };
 
 

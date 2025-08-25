@@ -41,7 +41,7 @@ export default function Login() {
 
 
 
-  <div className="min-h-screen   flex items-center justify-center  p-4 font-bebas" >
+  <div className="min-h-screen   flex items-center justify-center  p-4 font-dm-serif" >
 
 
       <motion.div

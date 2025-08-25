@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { useParams } from "react-router-dom";
 import {
   getSubmissionsForTaskApi,
@@ -41,7 +41,7 @@ export default function ReviewSubmissions() {
   if (loading) return <div>Loading...</div>;
 
   return (
-<div className="space-y-4 text-black font-bebas">
+<div className="space-y-4 text-black font-dm-serif">
   <h1 className="text-2xl font-bold">Review Submissions</h1>
   {err && <p className="text-red-600">{err}</p>}
 
@@ -92,28 +92,18 @@ export default function ReviewSubmissions() {
   <span className="font-semibold">Status:</span>{" "}
   <InlineEdit
     value={s.status}
-    type="select"
-    options={["pending", "evaluating", "passed", "failed"]}
+    type="custom"
     onSave={(val) => save(s._id, { status: val })}
-    renderSelect={(props) => (
-      <select
-        {...props}
-        className="px-2 py-1 text-sm font-bebas"
-  
-      >
-        {["pending", "evaluating", "passed", "failed"].map((opt) => (
-          <option
-            key={opt}
-            value={opt}
-     
-          >
-            {opt}
-          </option>
-        ))}
-      </select>
+    renderCustom={(props) => (
+      <StatusSelect
+        value={props.value}
+        onChange={(val) => props.onChange(val)}
+        options={["pending", "evaluating", "passed", "failed"]}
+      />
     )}
   />
 </div>
+
 
 
           <div>
@@ -146,7 +136,7 @@ export default function ReviewSubmissions() {
 
 
 
-function InlineEdit({ value, onSave, type = "text", options = [] }) {
+function InlineEdit({ value, onSave, type = "text", options = [], renderCustom }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(value);
 
@@ -164,6 +154,15 @@ function InlineEdit({ value, onSave, type = "text", options = [] }) {
         {value || "—"}
       </span>
     );
+  }
+
+  // Use custom renderer if provided
+  if (renderCustom) {
+    return renderCustom({
+      value: draft,
+      onChange: setDraft,
+      onSave: handleSave,
+    });
   }
 
   if (type === "select") {
@@ -197,5 +196,59 @@ function InlineEdit({ value, onSave, type = "text", options = [] }) {
   );
 }
 
+
+
+
+
+
+
+
+function StatusSelect({ value, onChange, options = ["pending", "evaluating", "passed", "failed"] }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef();
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSelect = (val) => {
+    onChange(val);
+    setOpen(false);
+  };
+
+  return (
+    <div className="relative w-40 font-dm-serif text-sm" ref={ref}>
+      {/* Selected value button */}
+      <button
+        type="button"
+        className="w-full bg-white border border-gray-300 rounded px-3 py-1 text-left flex justify-between items-center hover:border-gray-500"
+        onClick={() => setOpen(!open)}
+      >
+        <span>{value || "Select status"}</span>
+   
+      </button>
+
+      {/* Dropdown */}
+      {open && (
+        <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded shadow-lg max-h-40 overflow-auto">
+          {options.map((opt) => (
+            <li
+              key={opt}
+              className={`px-3 py-1 cursor-pointer hover:bg-gray-100 ${opt === value ? "bg-gray-200 font-semibold" : ""}`}
+              onClick={() => handleSelect(opt)}
+            >
+              {opt}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 
