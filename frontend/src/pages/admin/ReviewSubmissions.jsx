@@ -41,7 +41,7 @@ export default function ReviewSubmissions() {
   if (loading) return <div>Loading...</div>;
 
   return (
-<div className="space-y-4 text-black font-dm-serif">
+<div className="space-y-4 text-black font-chewy">
   <h1 className="text-2xl font-bold">Review Submissions</h1>
   {err && <p className="text-red-600">{err}</p>}
 
@@ -222,7 +222,7 @@ function StatusSelect({ value, onChange, options = ["pending", "evaluating", "pa
   };
 
   return (
-    <div className="relative w-40 font-dm-serif text-sm" ref={ref}>
+    <div className="relative w-40 font-chewy text-sm" ref={ref}>
       {/* Selected value button */}
       <button
         type="button"

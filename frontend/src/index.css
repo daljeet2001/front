@@ -4,6 +4,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chewy&display=swap');
+
 
 @import "tailwindcss";
 
@@ -17,6 +19,11 @@
 
 @theme {
   --font-bebas: "Bebas Neue", sans-serif;
+}
+
+
+@theme {
+  --font-chewy: "Chewy", cursive;
 }
 
 

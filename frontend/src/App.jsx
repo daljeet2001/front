@@ -22,7 +22,7 @@ export default function App() {
   const isFullWidth = fullWidthPages.includes(location.pathname);
 
   return (
-    <div className="min-h-screen font-dm-serif">
+    <div className="min-h-screen font-chewy">
       {!hideLayout && <Navbar />}
 
       {/* Conditionally wrap */}

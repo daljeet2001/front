@@ -40,7 +40,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 font-dm-serif">
+    <div className="min-h-screen flex items-center justify-center p-4 ">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -49,7 +49,7 @@ export default function Register() {
       >
         <Card className="shadow-xl bg-white rounded-2xl">
           <CardHeader className="text-center space-y-2">
-            <CardTitle className="text-3xl font-bebas font-bold">Front</CardTitle>
+            <CardTitle className="text-3xl font-chewy font-bold">Front</CardTitle>
             <p className="text-sm text-gray-500 font-chewy dark:text-gray-400">
               Create your account
             </p>
@@ -93,7 +93,7 @@ export default function Register() {
                   value={form.username}
                   onChange={handleChange}
                   required
-                  className="border-gray-300 dark:border-gray-700 focus-visible:ring-0 rounded-sm"
+                  className="border-gray-300 dark:border-gray-700 focus-visible:ring-0 rounded-full"
                 />
               </div>
 
@@ -108,7 +108,7 @@ export default function Register() {
                   value={form.email}
                   onChange={handleChange}
                   required
-                  className="border-gray-300 dark:border-gray-700 focus-visible:ring-0 rounded-sm"
+                  className="border-gray-300 dark:border-gray-700 focus-visible:ring-0 rounded-full"
                 />
               </div>
 
@@ -123,7 +123,7 @@ export default function Register() {
                   value={form.password}
                   onChange={handleChange}
                   required
-                  className="border-gray-300 dark:border-gray-700 focus-visible:ring-0 rounded-sm"
+                  className="border-gray-300 dark:border-gray-700 focus-visible:ring-0 rounded-full"
                 />
               </div>
 
@@ -133,7 +133,7 @@ export default function Register() {
 
               <Button
                 type="submit"
-                className="w-full font-medium rounded-lg font-chewy bg-black text-white hover:bg-gray-800 transition-colors"
+                className="w-full font-medium rounded-full font-chewy bg-black text-white hover:bg-gray-800 transition-colors"
                 disabled={loading}
               >
                 {loading ? (

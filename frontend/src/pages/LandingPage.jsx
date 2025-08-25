@@ -7,19 +7,10 @@ import FAQAccordian from '../components/FAQAccodian'
 
 export default function LandingPage() {
   return (
-    <div className="font-dm-serif text-gray-900">
+    <div className="font-chewy text-gray-900">
 {/* Hero Section */}
-<section className="relative min-h-[80vh] flex flex-col md:flex-row items-center px-6">
-  {/* Left Side Image */}
-  <div className="w-full md:w-1/2">
-    <img
-      src="/bg.png"
-      alt="Hero"
-      className="w-full h-auto md:h-full object-contain md:object-cover rounded-lg md:rounded-none"
-    />
-  </div>
-
-  {/* Right Side Content */}
+<section className="relative min-h-[60vh] flex flex-col md:flex-row items-center justify-center">
+ 
   <div className="w-full md:w-1/2 flex flex-col justify-center md:pl-10 text-center md:text-left mt-6 md:mt-0">
     <h1 className="text-3xl md:text-6xl font-bold mb-4">
       Streamline Your Frontend Interviews
@@ -29,12 +20,13 @@ export default function LandingPage() {
       can review—all in one place.
     </p>
     <div className="flex gap-4 justify-center md:justify-start">
-      <Link
-        className="bg-black text-white rounded-full px-5 py-2 font-medium"
-        to="/register"
-      >
-        Get Started
-      </Link>
+<Link
+  className="bg-black text-white rounded-full px-8 py-3 text-lg font-semibold shadow-md hover:bg-gray-800 transition"
+  to="/register"
+>
+  Get Started
+</Link>
+
     </div>
   </div>
 </section>

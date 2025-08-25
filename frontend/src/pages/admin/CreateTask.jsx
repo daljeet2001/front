@@ -234,7 +234,7 @@ function StatusSelect({ value, onChange, options = ["pending", "evaluating", "pa
   };
 
   return (
-    <div className="relative w-full font-dm-serif " ref={ref}>
+    <div className="relative w-full font-chewy " ref={ref}>
       {/* Selected value button */}
       <button
         type="button"

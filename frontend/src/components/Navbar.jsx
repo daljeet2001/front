@@ -9,12 +9,12 @@ export default function Navbar() {
   return (
     <header className="bg-white  ">
       <div className="  px-4 py-3 flex items-center justify-between">
-     <Link to="/" className="flex items-center font-bebas font-bold text-3xl">
+     <Link to="/" className="flex items-center font-chewy font-bold text-3xl">
   <span className="mr-2">Front</span>
   {/* <img className="w-12 h-12 mb-3" src="/shield.png" alt="logo" /> */}
 </Link>
 
-        <nav className="flex items-center gap-4 font-dm-serif ">
+        <nav className="flex items-center gap-4 ">
           {token ? (
             <>
               {!isAdmin && <Link to="/dashboard">Dashboard</Link>}

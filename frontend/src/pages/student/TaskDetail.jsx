@@ -53,7 +53,7 @@ export default function TaskDetail() {
   };
 
   return (
-    <div className="space-y-5 font-poppins">
+    <div className="space-y-5 font-chewy">
       <div className=" rounded-xl p-5">
             <img className="h-full w-full" src={task.uiImage} alt="task_image"/>
         <div className="flex items-center gap-4">
