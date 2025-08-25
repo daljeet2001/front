@@ -15,7 +15,7 @@ exports.uploadImage = async (req, res, next) => {
                 resource_type: "image",
             });
 
-            await unlinkAsync(filePath);
+          
 
             uploadedFiles.push({
                 field: req.file.fieldname,
@@ -35,7 +35,7 @@ exports.uploadImage = async (req, res, next) => {
                         resource_type: "image",
                     });
 
-                    await unlinkAsync(filePath);
+                    
 
                     uploadedFiles.push({
                         field,
